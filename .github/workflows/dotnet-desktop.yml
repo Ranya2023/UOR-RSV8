@@ -1,0 +1,96 @@
+name: Build UOR-RC (APK + Windows EXE)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # needed to publish the Release with the two files
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Restore signing key (same key every build → updates install over old version)
+        working-directory: android
+        run: base64 -d keystore.b64 > nextslide.jks
+
+      - name: Build APK
+        working-directory: android
+        run: gradle assembleRelease --no-daemon --stacktrace
+
+      - name: Rename
+        run: cp android/app/build/outputs/apk/release/app-release.apk UOR-RC.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: UOR-RC.apk
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build single-file EXE
+        run: dotnet publish windows/UOR-RC.csproj -c Release -o publish
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: exe
+          path: publish/UOR-RC.exe
+
+      # a normal Windows installer as well (the portable .exe stays the default)
+      - name: Build installer
+        shell: pwsh
+        env:
+          UORRC_VERSION: 1.0.${{ github.run_number }}
+        run: |
+          choco install innosetup --no-progress -y
+          Copy-Item publish/UOR-RC.exe windows/UOR-RC.exe -Force
+          & "$env:ProgramFiles(x86)\Inno Setup 6\ISCC.exe" /Qp "windows\installer.iss"
+        continue-on-error: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: setup
+          path: windows/UOR-RC-Setup.exe
+        continue-on-error: true
+
+  release:
+    needs: [android, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: UOR-RC v1.0.${{ github.run_number }}
+          body: |
+            📱 **UOR-RC.apk** → install on the Android phone
+            💻 **UOR-RC.exe** → portable: just run it (recommended)
+            🧩 **UOR-RC-Setup.exe** → normal installer, if you prefer Start-menu / desktop shortcuts
+          files: |
+            dist/UOR-RC.apk
+            dist/UOR-RC.exe
+            dist/UOR-RC-Setup.exe
