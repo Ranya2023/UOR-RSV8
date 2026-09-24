@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UOR-RC</title>
+<style>
+:root{
+  --bg:#0b0e17;--bg2:#0f1320;--card:#151a2a;--card2:#1b2135;--line:#262d45;--text:#eef1f8;--muted:#8d95ad;
+  --accent:#4f7dff;--accent2:#8b5cf6;--ok:#22c55e;--wait:#f59e0b;--off:#ef4444;--glow:rgba(79,125,255,.28);
+  --radius:16px;--font:"Segoe UI Variable Text","Segoe UI",Inter,"Noto Sans Arabic",Tahoma,sans-serif;
+}
+@media (prefers-color-scheme: light){
+  :root{--bg:#eef1f7;--bg2:#e6eaf3;--card:#ffffff;--card2:#f5f7fc;--line:#e1e5ef;--text:#141827;--muted:#626b84;--glow:rgba(79,125,255,.18)}
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;-webkit-font-smoothing:antialiased;overflow:hidden}
+body{display:grid;grid-template-rows:auto 1fr}
+/* ── header ── */
+header{display:flex;align-items:center;gap:14px;padding:16px 22px;background:linear-gradient(135deg,rgba(79,125,255,.16),rgba(139,92,246,.10) 60%,transparent);border-bottom:1px solid var(--line)}
+.logo{width:44px;height:44px;border-radius:12px;box-shadow:0 6px 18px var(--glow)}
+.brand h1{margin:0;font-size:20px;letter-spacing:.2px}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:12.5px}
+.spacer{flex:1}
+.seg{display:flex;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--muted);padding:6px 12px;border-radius:8px;font:inherit;font-size:12.5px;cursor:pointer}
+.seg button.on{background:var(--accent);color:#fff}
+/* ── layout ── */
+main{overflow:auto;padding:18px 22px 22px;display:grid;gap:16px;grid-template-columns:repeat(12,1fr);align-content:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:0 1px 0 rgba(255,255,255,.02),0 10px 30px rgba(0,0,0,.18)}
+.card h2{margin:0 0 12px;font-size:13px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:700;display:flex;align-items:center;gap:8px}
+.c4{grid-column:span 4}.c5{grid-column:span 5}.c7{grid-column:span 7}.c12{grid-column:span 12}
+@media (max-width:900px){.c4{grid-column:span 12}.c5,.c7{grid-column:span 12}}
+/* status */
+.status{display:flex;gap:12px;align-items:flex-start}
+.ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:20px;background:var(--card2);border:1px solid var(--line);flex:none}
+.status b{display:block;font-size:15px;margin-bottom:3px}
+.status span{color:var(--muted);font-size:12.5px;line-height:1.45;word-break:break-word}
+.pill{font-style:normal;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;margin-top:6px}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 0 3px color-mix(in srgb,currentColor 25%,transparent)}
+.ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,transparent)}
+.wait{color:var(--wait);background:color-mix(in srgb,var(--wait) 14%,transparent)}
+.off{color:var(--off);background:color-mix(in srgb,var(--off) 14%,transparent)}
+.pulse::before{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+/* pin */
+.pin{display:flex;gap:10px;margin:6px 0 14px;direction:ltr}
+[dir=rtl] .pin{justify-content:flex-end}
+.pin div{width:58px;height:70px;border-radius:14px;background:linear-gradient(160deg,var(--card2),var(--bg2));border:1px solid var(--line);display:grid;place-items:center;font-size:36px;font-weight:800;font-family:"Cascadia Mono",Consolas,monospace;color:var(--text);box-shadow:inset 0 -3px 0 rgba(0,0,0,.25)}
+ol.steps{margin:0;padding-inline-start:20px;color:var(--muted);line-height:1.9}
+ol.steps b{color:var(--text);font-weight:600}
+/* hotspot */
+.hs{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start}
+.qr{width:150px;height:150px;border-radius:14px;background:#fff;padding:8px;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.qr img{width:100%;height:100%;image-rendering:pixelated}
+.qr.empty{background:var(--card2);color:var(--muted);font-size:12px;text-align:center;border:1px dashed var(--line);box-shadow:none}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:10px 0 12px;font-size:13px}
+.kv span{color:var(--muted)}.kv code{font-family:"Cascadia Mono",Consolas,monospace;font-size:13px;color:var(--text);user-select:all}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.switch{position:relative;width:46px;height:26px;flex:none;cursor:pointer}
+.switch input{display:none}
+.switch i{position:absolute;inset:0;border-radius:999px;background:var(--line);transition:.2s}
+.switch i::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.switch input:checked+i{background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.switch input:checked+i::after{left:23px}
+.lbl{font-size:13px}
+.hint{color:var(--muted);font-size:12px;margin-top:8px}
+/* buttons */
+.btn{border:1px solid var(--line);background:var(--card2);color:var(--text);padding:10px 14px;border-radius:12px;font:inherit;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:.15s}
+.btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff;box-shadow:0 8px 20px var(--glow)}
+.link{background:none;border:0;color:var(--accent);font:inherit;cursor:pointer;padding:0}
+/* drop zone */
+.drop{margin-top:14px;border:2px dashed var(--line);border-radius:14px;padding:18px;text-align:center;color:var(--muted);transition:.15s}
+.drop.over{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);color:var(--text)}
+.bar{height:8px;border-radius:999px;background:var(--card2);overflow:hidden;margin-top:12px;display:none}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .2s}
+#fileTxt{font-size:12.5px;color:var(--muted);margin-top:8px;min-height:18px}
+/* log */
+details summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:700;font-size:13px;letter-spacing:.6px;text-transform:uppercase}
+details summary::-webkit-details-marker{display:none}
+#log{margin-top:12px;max-height:180px;overflow:auto;font-family:"Cascadia Mono",Consolas,monospace;font-size:12px;line-height:1.65;color:var(--muted);white-space:pre-wrap;direction:ltr;text-align:left}
+footer{grid-column:span 12;color:var(--muted);font-size:11.5px;text-align:center;margin-top:2px}
+[dir=rtl] .kv,[dir=rtl] .status{direction:rtl}
+</style></head>
+<body>
+<header>
+  <img class="logo" id="logo" alt="">
+  <div class="brand"><h1>UOR-RC</h1><p data-t="tag">Classroom remote · PowerPoint, Wi-Fi & Bluetooth</p></div>
+  <div class="spacer"></div>
+  <div class="seg"><button id="lEn" class="on" onclick="setLang('en')">English</button><button id="lKu" onclick="setLang('ku')">کوردی</button></div>
+</header>
+<main>
+  <section class="card c4"><div class="status"><div class="ico">📶</div><div><b data-t="wifi">Wi-Fi</b><span id="wifiTxt">…</span><br><em class="pill wait pulse" id="wifiPill">…</em></div></div></section>
+  <section class="card c4"><div class="status"><div class="ico">🔵</div><div><b data-t="bt">Bluetooth</b><span id="btTxt">…</span><br><em class="pill wait pulse" id="btPill">…</em></div></div></section>
+  <section class="card c4"><div class="status"><div class="ico">📊</div><div><b>PowerPoint</b><span id="pptTxt">…</span><br><em class="pill wait" id="pptPill">…</em></div></div></section>
+
+  <section class="card c5">
+    <h2>🔐 <span data-t="connect">Connect your phone</span></h2>
+    <div class="pin" id="pin"></div>
+    <ol class="steps">
+      <li data-t="s1">Put the phone on the <b>same Wi-Fi</b> — or scan the hotspot QR →</li>
+      <li data-t="s2">Open <b>UOR-RC</b> on the phone and tap <b>Connect</b></li>
+      <li data-t="s3">Type this <b>PIN</b> once — Bluetooth works as a backup</li>
+    </ol>
+  </section>
+
+  <section class="card c7">
+    <h2>📡 <span data-t="hotspot">Laptop hotspot</span></h2>
+    <div class="hs">
+      <div>
+        <div class="row"><label class="switch"><input type="checkbox" id="hsOn" onchange="act('hotspot')"><i></i></label>
+          <span class="lbl" id="hsState">…</span></div>
+        <div class="kv"><span data-t="name">Name</span><code id="ssid">—</code><span data-t="pass">Password</span><code id="pass">—</code><span data-t="devices">Devices</span><code id="clients">0</code></div>
+        <div class="row"><label class="switch"><input type="checkbox" id="auto" onchange="act('auto',this.checked)"><i></i></label>
+          <span class="lbl" data-t="auto">Turn on when UOR-RC opens</span></div>
+        <div class="hint"><button class="link" onclick="act('hotspotSettings')" data-t="hsSettings">Windows hotspot settings…</button> <span id="hsErr"></span></div>
+      </div>
+      <div><div class="qr empty" id="qr"><span data-t="qrOff">Turn the hotspot on to show the QR</span></div>
+        <div class="hint" style="text-align:center" data-t="qrHint">Scan with the phone camera</div></div>
+    </div>
+  </section>
+
+  <section class="card c12">
+    <h2>📁 <span data-t="present">Present & share</span></h2>
+    <div class="row">
+      <button class="btn primary" onclick="act('present')">📑 <span data-t="presentBtn">Present a file…</span></button>
+      <button class="btn" onclick="act('sendFiles')">📤 <span data-t="sendBtn">Send to phone…</span></button>
+      <button class="btn" onclick="act('openFolder')">📂 <span data-t="folderBtn">Received files</span></button>
+    </div>
+    <div class="drop" id="drop" data-t="drop">Drop files here to send them to the phone</div>
+    <div class="bar" id="bar"><i id="barFill"></i></div>
+    <div id="fileTxt"></div>
+  </section>
+
+  <section class="card c12">
+    <details id="det"><summary>📝 <span data-t="activity">Activity</span></summary><div id="log"></div></details>
+  </section>
+  <footer id="foot">UOR-RC · University of Raparin — English Department</footer>
+</main>
+<script>
+const T={
+ en:{tag:"Classroom remote · PowerPoint, Wi-Fi & Bluetooth",wifi:"Wi-Fi",bt:"Bluetooth",connect:"Connect your phone",
+  s1:"Put the phone on the <b>same Wi-Fi</b> — or scan the hotspot QR →",s2:"Open <b>UOR-RC</b> on the phone and tap <b>Connect</b>",
+  s3:"Type this <b>PIN</b> once — Bluetooth works as a backup",hotspot:"Laptop hotspot",name:"Name",pass:"Password",devices:"Devices",
+  auto:"Turn on when UOR-RC opens",hsSettings:"Windows hotspot settings…",qrOff:"Turn the hotspot on to show the QR",qrHint:"Scan with the phone camera",
+  present:"Present & share",presentBtn:"Present a file…",sendBtn:"Send to phone…",folderBtn:"Received files",
+  drop:"Drop files here to send them to the phone",activity:"Activity",on:"On",off:"Off",
+  ok:"Connected",wait:"Waiting",bad:"Off",running:"Presenting",open:"Open",none:"Not running"},
+ ku:{tag:"ڕیمۆتی پۆل · پاوەرپۆینت، وای‌فای و بلوتوس",wifi:"وای‌فای",bt:"بلوتوس",connect:"مۆبایلەکەت پەیوەست بکە",
+  s1:"مۆبایلەکە بخە سەر <b>هەمان وای‌فای</b> — یان QR ی هۆتسپۆت سکان بکە ←",s2:"<b>UOR-RC</b> لەسەر مۆبایل بکەرەوە و <b>پەیوەستبوون</b> دابگرە",
+  s3:"ئەم <b>PIN</b> ـە یەکجار بنووسە — بلوتوس وەک یەدەگ کار دەکات",hotspot:"هۆتسپۆتی لاپتۆپ",name:"ناو",pass:"وشەی نهێنی",devices:"ئامێرەکان",
+  auto:"کاتێک UOR-RC دەکرێتەوە هەڵیبکە",hsSettings:"ڕێکخستنی هۆتسپۆتی ویندۆز…",qrOff:"هۆتسپۆت هەڵبکە بۆ پیشاندانی QR",qrHint:"بە کامێرای مۆبایل سکانی بکە",
+  present:"پیشاندان و ناردن",presentBtn:"پیشاندانی فایل…",sendBtn:"ناردن بۆ مۆبایل…",folderBtn:"فایلە وەرگیراوەکان",
+  drop:"فایلەکان ڕابکێشە ئێرە بۆ ناردنیان بۆ مۆبایل",activity:"چالاکی",on:"هەڵکراوە",off:"کوژاوە",
+  ok:"پەیوەستە",wait:"چاوەڕوان",bad:"کوژاوە",running:"پیشان دەدرێت",open:"کراوەیە",none:"کار ناکات"}};
+let lang=localStorage.getItem('lang')||'en', S={};
+function t(k){return (T[lang]&&T[lang][k])||T.en[k]||k}
+function setLang(l){lang=l;localStorage.setItem('lang',l);document.documentElement.dir=l==='ku'?'rtl':'ltr';
+  document.getElementById('lEn').className=l==='en'?'on':'';document.getElementById('lKu').className=l==='ku'?'on':'';
+  document.querySelectorAll('[data-t]').forEach(e=>e.innerHTML=t(e.dataset.t));render();}
+function act(a,v){try{chrome.webview.postMessage({act:a,v:v===undefined?null:v});}catch(e){console.log('act',a,v)}}
+function pill(id,state,text){const p=document.getElementById(id);p.className='pill '+(state==='ok'?'ok':state==='bad'?'off':'wait pulse');p.textContent=text;}
+const KU_TXT=[[/^phone connected — /,'مۆبایل پەیوەستە — '],[/^waiting for the phone…?/,'چاوەڕێی مۆبایل…'],
+ [/^waiting for the phone +\(this PC: /,'چاوەڕێی مۆبایل (ئەم کۆمپیوتەرە: '],[/^off or not available/,'کوژاوە یان بەردەست نییە'],
+ [/^no network — turn on the hotspot below/,'تۆڕ نییە — هۆتسپۆت لە خوارەوە هەڵبکە'],[/^not running/,'کار ناکات'],
+ [/^no presentation open/,'هیچ پێشکەشکردنێک نەکراوەتەوە'],[/^Presenting /,'پیشان دەدرێت: '],[/ — slide (\d+) of (\d+)$/,' — سلاید $1 لە $2'],
+ [/^Open: /,'کراوەیە: '],[/ \(not presenting\)$/,' (پیشان نادرێت)']];
+function tr(x){if(lang!=='ku'||!x)return x;let y=x;for(const [a,b] of KU_TXT)y=y.replace(a,b);return y;}
+function render(){
+  if(!S.pin)return;
+  document.getElementById('wifiTxt').textContent=tr(S.wifi||'');pill('wifiPill',S.wifiState,t(S.wifiState==='ok'?'ok':S.wifiState==='bad'?'bad':'wait'));
+  document.getElementById('btTxt').textContent=tr(S.bt||'');pill('btPill',S.btState,t(S.btState==='ok'?'ok':S.btState==='bad'?'bad':'wait'));
+  document.getElementById('pptTxt').textContent=tr(S.ppt||'');
+  const pp=document.getElementById('pptPill');pp.className='pill '+(S.pptState==='show'?'ok':S.pptState==='open'?'wait':'off');
+  pp.textContent=t(S.pptState==='show'?'running':S.pptState==='open'?'open':'none');
+  document.getElementById('pin').innerHTML=String(S.pin).split('').map(d=>'<div>'+d+'</div>').join('');
+  document.getElementById('hsOn').checked=!!S.hsOn;
+  document.getElementById('hsState').textContent=S.hsOn?t('on'):t('off');
+  document.getElementById('ssid').textContent=S.ssid||'—';document.getElementById('pass').textContent=S.pass||'—';
+  document.getElementById('clients').textContent=S.clients??0;
+  document.getElementById('auto').checked=!!S.auto;
+  document.getElementById('hsErr').textContent=S.hsErr?('· '+S.hsErr):'';
+  const q=document.getElementById('qr');
+  if(S.qr){q.className='qr';q.innerHTML='<img src="'+S.qr+'">';}else{q.className='qr empty';q.innerHTML='<span>'+t('qrOff')+'</span>';}
+  if(S.fileTxt!==undefined)document.getElementById('fileTxt').textContent=S.fileTxt;
+  const bar=document.getElementById('bar');
+  if(S.filePct>=0&&S.filePct<100){bar.style.display='block';document.getElementById('barFill').style.width=S.filePct+'%';}else bar.style.display='none';
+  if(S.logo)document.getElementById('logo').src=S.logo;
+  if(S.version)document.getElementById('foot').textContent='UOR-RC '+S.version+' · University of Raparin — English Department';
+}
+function onMsg(m){
+  if(m.type==='state'){S=Object.assign(S,m);render();if(S.pin){ready=true;act('painted');}}
+  else if(m.type==='log'){const l=document.getElementById('log');l.textContent+=m.line+'\n';
+    if(l.textContent.length>40000)l.textContent=l.textContent.slice(-30000);l.scrollTop=l.scrollHeight;}
+}
+try{chrome.webview.addEventListener('message',e=>onMsg(e.data));}catch(e){}
+// drag & drop → the exe gets the real file paths
+const drop=document.getElementById('drop');
+['dragenter','dragover'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over');}));
+['dragleave','drop'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault();if(ev==='dragleave'&&e.relatedTarget)return;drop.classList.remove('over');}));
+document.addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer&&e.dataTransfer.files;
+  if(f&&f.length){try{chrome.webview.postMessageWithAdditionalObjects({act:'drop'},f);}catch(x){console.log('drop',f.length)}}});
+let ready=false;
+setLang(lang);
+act('ready');
+// ask again until the program answers (so it can never stay empty)
+let tries=0;
+const hello=setInterval(()=>{ if(ready||tries++>40){clearInterval(hello);return;} act('ready');
+  document.getElementById('foot').textContent='UOR-RC · '+(tries<3?'…':'waiting for the program…'); },700);
+</script>
+</body></html>

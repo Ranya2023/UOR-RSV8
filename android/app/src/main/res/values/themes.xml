@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#0F1117</color>
+    <color name="panel">#1A1D27</color>
+    <color name="panel2">#242836</color>
+    <color name="text">#E8EAF0</color>
+    <color name="muted">#8A90A2</color>
+    <color name="accent">#4F8CFF</color>
+    <color name="pad">#151823</color>
+
+    <style name="AppTheme" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:statusBarColor">@color/bg</item>
+        <item name="android:navigationBarColor">@color/bg</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:textColor">@color/text</item>
+    </style>
+
+    <style name="ToolBtn">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginEnd">6dp</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:paddingEnd">14dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:background">@drawable/btn_tool</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+</resources>

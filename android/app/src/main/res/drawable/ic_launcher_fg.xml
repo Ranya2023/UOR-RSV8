@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UOR-RC: presentation screen + play + wireless (same design as the PC icon) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#FFFFFF" android:pathData="M29.27,42.56H69.05A4.75,4.75 0 0 1 73.8,47.31V70.37A4.75,4.75 0 0 1 69.05,75.12H29.27A4.75,4.75 0 0 1 24.52,70.37V47.31A4.75,4.75 0 0 1 29.27,42.56Z" />
+    <path android:fillColor="#465CFF" android:pathData="M42.57,49.69L42.57,67.99L59.04,58.84Z" />
+    <path android:fillColor="#EBEEFF" android:pathData="M46.52,74.77H51.8A0.88,0.88 0 0 1 52.68,75.64999999999999V81.28A0.88,0.88 0 0 1 51.8,82.16H46.52A0.88,0.88 0 0 1 45.64,81.28V75.64999999999999A0.88,0.88 0 0 1 46.52,74.77Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M38.690000000000005,81.46H59.629999999999995A1.85,1.85 0 0 1 61.48,83.30999999999999V83.30000000000001A1.85,1.85 0 0 1 59.629999999999995,85.15H38.690000000000005A1.85,1.85 0 0 1 36.84,83.30000000000001V83.30999999999999A1.85,1.85 0 0 1 38.690000000000005,81.46Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M71.34,42.56a2.46,2.46 0 1 0 4.93,0a2.46,2.46 0 1 0 -4.93,0Z" />
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="2.82" android:strokeLineCap="butt" android:pathData="M74.43,35.37A7.22,7.22 0 0 1 80.99,41.93" />
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="2.82" android:strokeLineCap="butt" android:pathData="M74.89,30.11A12.5,12.5 0 0 1 86.25,41.47" />
+    <path android:strokeColor="#E6FFFFFF" android:strokeWidth="2.82" android:strokeLineCap="butt" android:pathData="M75.35,24.85A17.78,17.78 0 0 1 91.51,41.01" />
+</vector>

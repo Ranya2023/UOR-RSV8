@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- 10.0.19041 gives access to the built-in Windows Bluetooth (RFCOMM) APIs -->
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>UOR-RC</AssemblyName>
+    <RootNamespace>Remco</RootNamespace>
+    <Version>1.0.0</Version>
+    <Product>UOR-RC</Product>
+    <Company>University of Raparin – English Department</Company>
+    <AssemblyTitle>UOR-RC – PowerPoint remote</AssemblyTitle>
+
+    <!-- One self-contained .exe: no .NET install needed on classroom PCs -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>none</DebugType>
+    <ApplicationIcon>remco.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="remco.ico" LogicalName="remco.ico" />
+    <EmbeddedResource Include="ui.html" LogicalName="ui.html" />
+    <EmbeddedResource Include="logo.png" LogicalName="logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- QR code so the phone camera can join the laptop hotspot in one tap -->
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+    <!-- plays the phone's sound on the PC -->
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <!-- full-screen photo / video player (Edge WebView2, built into Windows 10/11) -->
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2792.45" />
+  </ItemGroup>
+
+</Project>

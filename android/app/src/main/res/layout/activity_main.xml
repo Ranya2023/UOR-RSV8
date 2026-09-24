@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- ── Top bar: connection ─────────────────────────────── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/statusDot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="●"
+            android:textColor="#E5484D"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text"
+            android:textSize="14sp" />
+
+        
+
+        <TextView
+            android:id="@+id/timerText"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/btn_tool"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="⌛ --:--"
+            android:textColor="@color/text"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btnLang"
+            style="@style/ToolBtn"
+            android:layout_height="36dp"
+            android:text="EN" />
+
+        <Button
+            android:id="@+id/btnConnect"
+            style="@style/ToolBtn"
+            android:layout_height="36dp"
+            android:layout_marginEnd="0dp" />
+    </LinearLayout>
+
+    <!-- ── Compact slide / animation line ───────────────────── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp">
+
+        <TextView
+            android:id="@+id/slideInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="– / –"
+            android:textColor="@color/text"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/animInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/muted"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- ── File transfer progress ───────────────────────────── -->
+    <LinearLayout
+        android:id="@+id/transferBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/transferText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="middle"
+            android:maxLines="1"
+            android:textColor="@color/text"
+            android:textSize="12sp" />
+
+        <ProgressBar
+            android:id="@+id/transferProgress"
+            style="@android:style/Widget.Material.ProgressBar.Horizontal"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:max="100" />
+    </LinearLayout>
+
+    <!-- ── Current / next slide previews ────────────────────── -->
+    <LinearLayout
+        android:id="@+id/previewRow"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/panel">
+
+            <ImageView
+                android:id="@+id/imgCur"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="3dp"
+                android:scaleType="fitCenter" />
+
+            <TextView
+                android:id="@+id/lblCur"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="4dp"
+                android:background="#99000000"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/panel">
+
+            <ImageView
+                android:id="@+id/imgNext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.75"
+                android:padding="3dp"
+                android:scaleType="fitCenter" />
+
+            <TextView
+                android:id="@+id/lblNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="4dp"
+                android:background="#99000000"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- ── Speaker notes (toggle) ───────────────────────────── -->
+    <ScrollView
+        android:id="@+id/notesPanel"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/panel"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/notesText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/text"
+            android:textIsSelectable="false"
+            android:textSize="15sp" />
+    </ScrollView>
+
+    <!-- ── Tools ────────────────────────────────────────────── -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button android:id="@+id/toolMouse" style="@style/ToolBtn" />
+            <Button android:id="@+id/toolLaser" style="@style/ToolBtn" />
+            <Button android:id="@+id/toolSpot" style="@style/ToolBtn" />
+            <Button android:id="@+id/toolLens" style="@style/ToolBtn" />
+            <Button android:id="@+id/toolZoom" style="@style/ToolBtn" />
+            <Button android:id="@+id/toolPen" style="@style/ToolBtn" />
+            <Button android:id="@+id/toolHigh" style="@style/ToolBtn" />
+            <Button android:id="@+id/toolEraser" style="@style/ToolBtn" />
+            <Button android:id="@+id/toolNumber" style="@style/ToolBtn" />
+            <Button android:id="@+id/toolText" style="@style/ToolBtn" />
+            <Button android:id="@+id/btnClear" style="@style/ToolBtn" />
+            <Button android:id="@+id/btnNotes" style="@style/ToolBtn" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- ── Options of the selected tool (built in code) ─────── -->
+    <LinearLayout
+        android:id="@+id/optionsPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/panel"
+        android:orientation="vertical"
+        android:paddingStart="8dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="6dp"
+        android:visibility="gone" />
+
+    <!-- ── Touchpad ─────────────────────────────────────────── -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="6dp"
+        android:layout_weight="1">
+
+        <edu.uor.remco.TouchpadView
+            android:id="@+id/pad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/padHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:padding="8dp"
+            android:textColor="@color/muted"
+            android:textSize="11sp" />
+    </FrameLayout>
+
+    <!-- ── Real mouse buttons + keyboard (Mouse mode) ───────── -->
+    <LinearLayout
+        android:id="@+id/mouseBar"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="6dp"
+        android:layoutDirection="ltr"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btnLeft"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_prev"
+            android:stateListAnimator="@null"
+            android:textAllCaps="false"
+            android:textColor="@color/text"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/btnKeyboard"
+            android:layout_width="64dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/btn_tool"
+            android:stateListAnimator="@null"
+            android:text="⌨"
+            android:textColor="@color/text"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnRight"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_prev"
+            android:stateListAnimator="@null"
+            android:textAllCaps="false"
+            android:textColor="@color/text"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!-- special keys, shown while the phone keyboard is typing on the PC -->
+    <HorizontalScrollView
+        android:id="@+id/kbBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layoutDirection="ltr"
+        android:scrollbars="none"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/kbKeys"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
+
+    <!-- invisible text field that receives the phone keyboard -->
+    <EditText
+        android:id="@+id/kbInput"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.01"
+        android:background="@null"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        android:textColor="@color/bg" />
+
+    <!-- ── Whiteboard / quiz / document controls (built in code) ── -->
+    <LinearLayout
+        android:id="@+id/viewBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/panel"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:visibility="gone" />
+
+    <!-- ── Photo / video remote (while one is on the projector) ── -->
+    <LinearLayout
+        android:id="@+id/mediaBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/panel"
+        android:layoutDirection="ltr"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/mediaInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="middle"
+                android:maxLines="1"
+                android:textColor="@color/text"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/mediaTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:textColor="@color/muted"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/mediaSeek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:max="1000" />
+
+        <LinearLayout
+            android:id="@+id/mediaButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:orientation="horizontal" />
+    </LinearLayout>
+
+    <!-- ── Show controls ────────────────────────────────────── -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button android:id="@+id/btnStart" style="@style/ToolBtn" />
+            <Button android:id="@+id/btnStartCur" style="@style/ToolBtn" />
+            <Button android:id="@+id/btnEnd" style="@style/ToolBtn" />
+            <Button android:id="@+id/btnBlack" style="@style/ToolBtn" />
+            <Button android:id="@+id/btnWhite" style="@style/ToolBtn" />
+            <Button android:id="@+id/btnSlides" style="@style/ToolBtn" />
+            <Button android:id="@+id/btnQuiz" style="@style/ToolBtn" />
+            <Button android:id="@+id/btnPicker" style="@style/ToolBtn" />
+            <Button android:id="@+id/btnFiles" style="@style/ToolBtn" />
+            <Button android:id="@+id/btnSettings" style="@style/ToolBtn" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- ── Prev / Next (always LTR) ─────────────────────────── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginTop="6dp"
+        android:layoutDirection="ltr"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnPrev"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_prev"
+            android:stateListAnimator="@null"
+            android:textAllCaps="false"
+            android:textColor="@color/text"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1.4"
+            android:background="@drawable/btn_next"
+            android:stateListAnimator="@null"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

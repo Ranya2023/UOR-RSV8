@@ -1,0 +1,62 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quiz</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Segoe UI,Tahoma,sans-serif;background:#0f1117;color:#e8eaf0;min-height:100vh}
+.wrap{padding:16px;max-width:680px;margin:0 auto}
+h1{font-size:21px;margin:8px 0 4px;line-height:1.35}.sub{color:#8a90a2;font-size:14px}
+input{width:100%;padding:16px;font-size:20px;border-radius:14px;border:0;margin:14px 0}
+.go{width:100%;padding:16px;font-size:20px;font-weight:800;border:0;border-radius:14px;background:#4f8cff;color:#fff}
+.opts{display:grid;gap:12px;grid-template-columns:1fr 1fr;margin-top:14px}
+.opt{border:0;border-radius:18px;color:#fff;min-height:104px;padding:12px;box-shadow:0 6px 0 rgba(0,0,0,.35);text-align:left;font-size:17px;font-weight:700}
+.opt b{display:block;font-size:30px;font-weight:900}
+.opt:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.35)}
+.opt.sel{outline:5px solid #fff}.opt.dim{opacity:.35}
+.pill{display:inline-block;background:#1a1d27;border-radius:999px;padding:6px 14px;font-size:14px;color:#c8ccd8;margin-top:8px}
+#st{text-align:center;font-size:18px;margin-top:16px;min-height:26px}
+.big{font-size:42px;font-weight:900;text-align:center;margin-top:14px}
+.tiny{font-size:13px;color:#8a90a2;text-align:center;margin-top:6px}
+table{width:100%;margin-top:14px;font-size:16px}td{padding:6px 4px;border-bottom:1px solid #22262f}td:last-child{text-align:right;color:#fbbf24;font-weight:700}
+</style></head><body><div class="wrap">
+<div id="join"><div class="sub">Quiz · تاقیکردنەوە</div><h1>Your name · ناوت</h1>
+ <input id="nm" maxlength="24" autocomplete="off" placeholder="Sara"><button class="go" onclick="join()">Join · بەشداربوون</button></div>
+<div id="game" style="display:none">
+ <div class="sub"><span id="who"></span> <span class="pill" id="sc">0</span></div>
+ <h1 id="q"></h1><div id="opts" class="opts"></div><div id="st"></div>
+ <div id="res"></div>
+</div></div>
+<script>
+const C=['#ef4444','#3b82f6','#eab308','#22c55e','#a855f7','#f97316'];
+let id=localStorage.getItem('remcoId');if(!id){id=Math.random().toString(36).slice(2)+Date.now().toString(36);localStorage.setItem('remcoId',id);}
+let S=null,mine=null,name=localStorage.getItem('remcoName')||'';
+async function join(){const v=document.getElementById('nm').value.trim();if(!v)return;
+ name=v;localStorage.setItem('remcoName',v);
+ await fetch('/join?id='+encodeURIComponent(id)+'&name='+encodeURIComponent(v),{cache:'no-store'});poll();}
+function draw(){if(!S)return;
+ document.getElementById('join').style.display=S.joined?'none':'block';
+ document.getElementById('game').style.display=S.joined?'block':'none';
+ if(!S.joined)return;
+ document.getElementById('who').textContent=S.name;
+ document.getElementById('sc').textContent='⭐ '+S.score;
+ document.getElementById('q').textContent=(S.qn>1?('('+S.qi+'/'+S.qn+') '):'')+(S.q||'');
+ const o=document.getElementById('opts');
+ if(o.dataset.qid!==S.qid||o.childElementCount!==S.n){o.innerHTML='';o.dataset.qid=S.qid;
+  for(let i=0;i<S.n;i++){const b=document.createElement('button');b.className='opt';b.style.background=C[i];b.onclick=()=>vote(i);o.appendChild(b);}}
+ [...o.children].forEach((b,i)=>{const t=(S.opts&&S.opts[i])?S.opts[i]:'';
+  let extra='';if(S.reveal&&S.counts){const tot=S.counts.reduce((a,b)=>a+b,0)||1;extra=' — '+S.counts[i]+' · '+Math.round(S.counts[i]*100/tot)+'%'+(S.correct===i?' ✓':'');}
+  b.innerHTML='<b>'+String.fromCharCode(65+i)+'</b>'+(t||'')+extra;
+  b.className='opt'+(mine===i?' sel':'')+(S.reveal&&S.correct>=0&&S.correct!==i?' dim':'');b.disabled=!S.open;});
+ const st=document.getElementById('st'),res=document.getElementById('res');res.innerHTML='';
+ if(S.reveal){st.textContent='';
+  res.innerHTML='<div class="big">'+(S.correct<0?'📊 Results':(S.ok?'✅ +'+S.last:'❌ 0'))+'</div>'+
+   '<div class="tiny">'+(S.ok?'Correct · ڕاستە':(mine===null?'No answer · وەڵامت نەدا':'Not this time · هەڵەیە'))+
+   ' — ⭐ '+S.score+' · #'+S.rank+' of '+S.players+'</div>'+
+   (S.top&&S.top.length?'<table>'+S.top.map((t,i)=>'<tr><td>'+['🥇','🥈','🥉','4.','5.'][i]+' '+t.name+'</td><td>'+t.score+'</td></tr>').join('')+'</table>':'');}
+ else if(!S.open)st.textContent='⏸ Waiting for the teacher · چاوەڕێی مامۆستا';
+ else st.textContent=mine===null?'Tap your answer · وەڵامەکەت هەڵبژێرە':'✓ Sent · نێردرا';}
+async function poll(){try{const r=await fetch('/state?id='+encodeURIComponent(id),{cache:'no-store'});const s=await r.json();
+ if(!S||s.qid!==S.qid)mine=(s.mine===null||s.mine===undefined)?null:s.mine; else if(s.mine!==null&&s.mine!==undefined)mine=s.mine;
+ S=s;draw();}catch(e){}}
+async function vote(i){if(!S||!S.open||mine!==null)return;mine=i;draw();
+ try{await fetch('/vote?id='+encodeURIComponent(id)+'&c='+i+'&q='+S.qid,{cache:'no-store'});}catch(e){}}
+if(name){document.getElementById('nm').value=name;fetch('/join?id='+encodeURIComponent(id)+'&name='+encodeURIComponent(name),{cache:'no-store'});}
+poll();setInterval(poll,1200);
+</script></body></html>
